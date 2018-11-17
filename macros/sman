@@ -1,7 +1,0 @@
-#! /bin/sh
-# search man page
-
-OLDMANPAGER="${MANPAGER}"
-MANPAGER="less -g -s -p '\b$2\b'"
-man "$1"
-MANPAGER="${OLDMANPAGER}"
