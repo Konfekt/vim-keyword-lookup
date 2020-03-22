@@ -1,6 +1,5 @@
-*Vim-SMAN*
-======
+This Vim plug-in sets `&keywordprg` (see `:help K`) so that hitting the key `K` shows the documentation of the keyword under the cursor in
 
-By this Vim plug-in, hitting the key `K` shows the documentation of the
-keyword under the cursor in common `Unix` configuration files such as `.inputrc` or that of `Git`, `ZSH`, `SSH`, `GPG`, ...
+- `sh`, `zsh`, `powershell`, `batch`, ... files and
+- common (`Unix`) configuration files, for example, those of `Git`, `ZSH`, `SSH`, `GPG`, ...
 
