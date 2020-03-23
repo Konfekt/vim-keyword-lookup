@@ -19,4 +19,8 @@ if exists('s:pwsh_cmd')
 endif
 setlocal keywordprg=:GetHelp
 
-let g:loaded_ps1 = 1
+if !exists('b:undo_ftplugin') || empty(b:undo_ftplugin)
+  let b:undo_ftplugin = 'setlocal keywordprg< iskeyword<'
+else
+  let b:undo_ftplugin .= '| setlocal keywordprg< iskeyword<'
+endif
