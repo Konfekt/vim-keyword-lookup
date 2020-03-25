@@ -4,11 +4,11 @@ endif
 
 if !has('gui_running')
   command! -buffer -nargs=1 Sman
-        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''\b' . <q-args> . '\b'' --hilite-search --squeeze-blank-lines" man ' . 'ssh_config' |
+        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s+' . <q-args> . '\b'' --hilite-search" man ' . 'ssh_config' |
         \ redraw!
 elseif has('terminal')
   command! -buffer -nargs=1 Sman
-        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''\\b' . <q-args> . '\\b'' --hilite-search --squeeze-blank-lines" man ' . 'ssh_config'
+        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s+' . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'ssh_config'
 else
   finish
 endif

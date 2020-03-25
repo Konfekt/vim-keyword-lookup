@@ -20,11 +20,11 @@ function! s:keywordprg(man)
   let b:keyword_lookup_manpage = a:man
   if !has('gui_running')
     command! -buffer -nargs=1 Sman
-          \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''\b' . <q-args> . '\b'' --hilite-search --squeeze-blank-lines" man ' . b:keyword_lookup_manpage |
+          \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''\b' . <q-args> . '\b'' --hilite-search" man ' . b:keyword_lookup_manpage |
           \ redraw!
   elseif has('terminal')
     command! -buffer -nargs=1 Sman
-          \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''\\b' . <q-args> . '\\b'' --hilite-search --squeeze-blank-lines" man ' . b:keyword_lookup_manpage
+          \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('\b' . <q-args> . '\b', '\') . ''' --hilite-search" man ' . b:keyword_lookup_manpage
   else
     return
   endif
