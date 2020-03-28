@@ -2,11 +2,11 @@ if !has('unix')
   finish
 endif
 
-au BufRead,BufNewFile,BufFilePost .inputrc                  call s:keywordprg('3 readline')
-au BufRead,BufNewFile,BufFilePost */.gnupg/gpg-agent.conf    call s:keywordprg('gpg-agent')
-au BufRead,BufNewFile,BufFilePost .mbsyncrc                  call s:keywordprg('mbsync')
-au BufRead,BufNewFile,BufFilePost .msmtprc                  call s:keywordprg('msmtp')
-au BufRead,BufNewFile,BufFilePost .latexmkrc                 call s:keywordprg('latexmk')
+au BufWinEnter,BufFilePost .inputrc                   call s:keywordprg('3 readline')
+au BufWinEnter,BufFilePost */.gnupg/gpg-agent.conf    call s:keywordprg('gpg-agent')
+au BufWinEnter,BufFilePost .mbsyncrc                  call s:keywordprg('mbsync')
+au BufWinEnter,BufFilePost .msmtprc                   call s:keywordprg('msmtp')
+au BufWinEnter,BufFilePost .latexmkrc                 call s:keywordprg('latexmk')
 
 function! s:keywordprg(man)
   let b:keyword_lookup_manpage = a:man
@@ -20,8 +20,9 @@ function! s:keywordprg(man)
   else
     return
   endif
-  setlocal iskeyword+=-
-  setlocal keywordprg=:Sman
+
+  setlocal iskeyword+=- keywordprg=:Sman
+
   if !exists('b:undo_ftplugin') || empty(b:undo_ftplugin)
     let b:undo_ftplugin = 'setlocal keywordprg< iskeyword<'
   else
