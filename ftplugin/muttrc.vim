@@ -4,11 +4,11 @@ endif
 
 if !has('gui_running')
   command! -buffer -nargs=1 Sman
-        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s+' . <q-args> . '\b'' --hilite-search" man ' . 'muttrc' |
+        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s{,8}' . <q-args> . '\b'' --hilite-search" man ' . 'muttrc' |
         \ redraw!
 elseif has('terminal')
   command! -buffer -nargs=1 Sman
-        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s+' . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'muttrc'
+        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s{,8}' . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'muttrc'
 else
   finish
 endif

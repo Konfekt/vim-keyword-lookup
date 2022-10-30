@@ -4,11 +4,11 @@ endif
 
 if !has('gui_running')
   command! -buffer -nargs=1 Sman
-        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s+' . KeywordLookup_gitconfig() . <q-args> . '\b'' --hilite-search" man ' . 'git-config' |
+        \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s{,8}' . KeywordLookup_gitconfig() . <q-args> . '\b'' --hilite-search" man ' . 'git-config' |
         \ redraw!
 elseif has('terminal')
   command! -buffer -nargs=1 Sman
-        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s+' . KeywordLookup_gitconfig() . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'git-config'
+        \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s{,8}' . KeywordLookup_gitconfig() . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'git-config'
 else
   finish
 endif

@@ -18,9 +18,9 @@ function! KeywordLookup_systemd(keyword) abort
   let matches = matchlist(getline(search('\v^\s*\[\s*.+\s*\]\s*$', 'nbWz')), '\v^\s*\[\s*(\k+).*\]\s*$')
   if len(matches) > 1
     let section = matches[1]
-    return 'LESS= MANPAGER="less --pattern=''(^|,)\s+' . a:keyword . '='' --hilite-search" man ' . 'systemd.' . section
+    return 'LESS= MANPAGER="less --pattern=''(^|,)\s{,8}' . a:keyword . '='' --hilite-search" man ' . 'systemd.' . section
   else
-    return 'LESS= MANPAGER="less --pattern=''(^|,)\s+' . a:keyword . '='' --hilite-search" man ' . 'systemd'
+    return 'LESS= MANPAGER="less --pattern=''(^|,)\s{,8}' . a:keyword . '='' --hilite-search" man ' . 'systemd'
   endif
 endfunction
 " endif
