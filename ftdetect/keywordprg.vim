@@ -6,6 +6,7 @@ au BufWinEnter,BufFilePost */.gnupg/gpg-agent.conf    call s:keywordprg('gpg-age
 au BufWinEnter,BufFilePost .mbsyncrc                  call s:keywordprg('mbsync')
 au BufWinEnter,BufFilePost .msmtprc                   call s:keywordprg('msmtp')
 au BufWinEnter,BufFilePost .latexmkrc                 call s:keywordprg('latexmk')
+au BufWinEnter,BufFilePost NetworkManager.conf        call s:keywordprg('NetworkManager.conf')
 
 function! s:keywordprg(man)
   let b:keyword_lookup_manpage = a:man
