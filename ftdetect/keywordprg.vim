@@ -2,6 +2,7 @@ if !has('unix')
   finish
 endif
 
+au BufWinEnter,BufFilePost */mpv/mpv.conf             call s:keywordprg('mpv')
 au BufWinEnter,BufFilePost */.gnupg/gpg-agent.conf    call s:keywordprg('gpg-agent')
 au BufWinEnter,BufFilePost .mbsyncrc                  call s:keywordprg('mbsync')
 au BufWinEnter,BufFilePost .msmtprc                   call s:keywordprg('msmtp')
