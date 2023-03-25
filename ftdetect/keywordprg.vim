@@ -3,6 +3,8 @@ if !has('unix')
 endif
 
 au BufWinEnter,BufFilePost */mpv/mpv.conf             call s:keywordprg('mpv')
+au BufWinEnter,BufFilePost */yt-dlp/config            call s:keywordprg('yt-dlp')
+au BufWinEnter,BufFilePost */youtube-dl/config        call s:keywordprg('youtube-dl')
 au BufWinEnter,BufFilePost */.gnupg/gpg-agent.conf    call s:keywordprg('gpg-agent')
 au BufWinEnter,BufFilePost .mbsyncrc                  call s:keywordprg('mbsync')
 au BufWinEnter,BufFilePost .msmtprc                   call s:keywordprg('msmtp')
