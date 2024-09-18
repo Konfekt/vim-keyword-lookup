@@ -22,11 +22,11 @@ au BufWinEnter,BufFilePost */.imapfilter/*.lua        call s:keywordprg('imapfil
 
 function! s:keywordprg(man)
   let b:keyword_lookup_manpage = a:man
-  if !has('gui_running')
+  if !has('gui_running') && !has('nvim')
     command! -buffer -nargs=1 ConfigKeywordPrg
           \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''\b' . <q-args> . '\b'' --hilite-search" man ' . b:keyword_lookup_manpage |
           \ redraw!
-  elseif has('terminal')
+  elseif exists(':terminal') == 2
     command! -buffer -nargs=1 ConfigKeywordPrg
           \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('\b' . <q-args> . '\b', '\') . ''' --hilite-search" man ' . b:keyword_lookup_manpage
   else

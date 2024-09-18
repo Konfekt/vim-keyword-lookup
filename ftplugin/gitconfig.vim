@@ -2,11 +2,11 @@ if !has('unix')
   finish
 endif
 
-if !has('gui_running')
+if !has('gui_running') && !has('nvim')
   command! -buffer -nargs=1 GitKeywordPrg
         \ silent exe '!' . 'LESS= MANPAGER="less --pattern=''^\s{,8}' . KeywordLookup_gitconfig() . <q-args> . '\b'' --hilite-search" man ' . 'git-config' |
         \ redraw!
-elseif has('terminal')
+elseif exists(':terminal') == 2
   command! -buffer -nargs=1 GitKeywordPrg
         \ silent exe 'term ' . 'env LESS= MANPAGER="less --pattern=''' . escape('^\s{,8}' . KeywordLookup_gitconfig() . <q-args> . '\b', '\') . ''' --hilite-search" man ' . 'git-config'
 else
