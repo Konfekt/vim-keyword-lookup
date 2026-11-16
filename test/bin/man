@@ -1,0 +1,3 @@
+#!/bin/sh
+# Stand-in for man(1): records how the plugin invoked it.
+printf 'LESS=%s\nMANPAGER=%s\nARGS=%s\n' "${LESS-unset}" "$MANPAGER" "$*" > "$KEYWORD_LOOKUP_LOG"
