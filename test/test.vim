@@ -80,21 +80,38 @@ call s:check(&l:keywordprg ==# &g:keywordprg, 'mpv undo: keywordprg=' . &l:keywo
 call s:check(exists(':ConfigKeywordPrg') != 2, 'mpv undo: command still defined')
 bwipeout!
 
+" A keyword with characters that :! would expand (here with # and % in
+" 'iskeyword') is passed on literally.
+execute 'edit' fnameescape(s:mpv)
+setlocal iskeyword+=#,%
+call setline(1, 'foo#bar%baz')
+call cursor(1, 1)
+let s:out = s:lookup()
+call s:check(index(s:out, 'MANPAGER=less --pattern=''\bfoo#bar%baz\b'' --hilite-search') >= 0,
+      \ 'special keyword: pager ' . string(s:out))
+bwipeout!
+
 " gitconfig: the key is looked up below its section.
-let s:git = s:file('c/.gitconfig', ['[core]', "\teditor = vim", '[remote "origin"]', "\turl = x"])
+let s:git = s:file('c/.gitconfig', ['[core]', "\teditor = vim", '[remote "origin"]', "\turl = x",
+      \ '[branch.main] # old-style subsection, with a comment', "\tremote = origin"])
 execute 'edit' fnameescape(s:git)
 call s:check(&filetype ==# 'gitconfig', 'gitconfig: filetype=' . &filetype)
 call s:check(&l:keywordprg ==# ':GitKeywordPrg', 'gitconfig: keywordprg=' . &l:keywordprg)
-call cursor(2, 2)
-let s:out = s:lookup()
+function! s:git_pattern(lnum, col, pattern) abort
+  call cursor(a:lnum, a:col)
+  let out = s:lookup()
+  call s:check(index(out, 'MANPAGER=less --pattern=''' . a:pattern . ''' --hilite-search') >= 0,
+        \ 'gitconfig line ' . a:lnum . ': pager ' . string(out))
+  return out
+endfunction
+let s:out = s:git_pattern(2, 2, '^\s{0,8}core\.editor\b')
 call s:check(index(s:out, 'ARGS=git-config') >= 0, 'gitconfig: man args ' . string(s:out))
-call s:check(index(s:out, 'MANPAGER=less --pattern=''^\s{,8}core\.editor\b'' --hilite-search') >= 0,
-      \ 'gitconfig: pager ' . string(s:out))
-" On a section header itself, its own section is used.
-call cursor(3, 1)
-let s:out = s:lookup()
-call s:check(index(s:out, 'MANPAGER=less --pattern=''^\s{,8}remote\.remote\b'' --hilite-search') >= 0,
-      \ 'gitconfig header: pager ' . string(s:out))
+" Keys of a section with a subsection are documented as remote.<name>.url.
+call s:git_pattern(4, 2, '^\s{0,8}remote\.(<[^>]+>\.)?url\b')
+call s:git_pattern(6, 2, '^\s{0,8}branch\.(<[^>]+>\.)?remote\b')
+" On a section header line, the section name itself is looked up.
+call s:git_pattern(3, 2, '^\s{0,8}remote\b')
+call s:git_pattern(5, 2, '^\s{0,8}branch\b')
 
 " Changing the filetype undoes the gitconfig settings.
 set filetype=text

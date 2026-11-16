@@ -9,7 +9,10 @@ function! keyword_lookup#man(page, pattern) abort
     silent execute '!LESS= MANPAGER="less --pattern=''' . a:pattern . ''' --hilite-search" man ' . a:page
     redraw!
   else
-    silent execute 'terminal env LESS= MANPAGER="less --pattern=''' . escape(a:pattern, '\') . ''' --hilite-search" man ' . a:page
+    " Double the backslashes, except those by which K escapes % and # in the
+    " keyword, as :terminal expands those like :! does.
+    let pattern = substitute(a:pattern, '\\\%([%#]\)\@!', '\\\\', 'g')
+    silent execute 'terminal env LESS= MANPAGER="less --pattern=''' . pattern . ''' --hilite-search" man ' . a:page
   endif
 endfunction
 
@@ -36,10 +39,19 @@ function! keyword_lookup#config(page) abort
   call keyword_lookup#set('ConfigKeywordPrg')
 endfunction
 
-" The section of the cursor line in a gitconfig file as a pattern prefix,
-" such as 'core\.'; empty outside of any section.
+" The section of the key on the cursor line of a gitconfig file as a pattern
+" prefix for its entry in git-config(1): 'core\.' below [core], and
+" 'remote\.(<[^>]+>\.)?' below [remote "origin"], whose keys are documented
+" as remote.<name>.url and so on. Empty on a section header line, where the
+" keyword is the section name itself, and outside of any section.
 function! keyword_lookup#gitconfig_section() abort
-  let header = getline(search('\v^\s*\[\s*.+\s*\]\s*$', 'bcnW'))
-  let matches = matchlist(header, '\v^\s*\[\s*(\k+).*\]\s*$')
-  return len(matches) > 1 ? matches[1] . '\.' : ''
+  if getline('.') =~# '^\s*\['
+    return ''
+  endif
+  let header = getline(search('^\s*\[', 'bnW'))
+  let matches = matchlist(header, '\v^\s*\[\s*([[:alnum:]-]+)(\s+"|\.)?')
+  if empty(matches)
+    return ''
+  endif
+  return matches[1] . '\.' . (empty(matches[2]) ? '' : '(<[^>]+>\.)?')
 endfunction
