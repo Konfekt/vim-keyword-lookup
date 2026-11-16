@@ -1,11 +1,50 @@
-keyword-lookup.txt                                 *keyword-lookup-contents*
+*vim-keyword-lookup.txt*  Look up keywords of configuration files in manpages
 
+                                                    *keyword-lookup*
+                                                    *keyword-lookup-contents*
 
-This Vim plug-in sets `&keywordprg` (see ) so that hitting the key `K` shows
-the documentation of the keyword under the cursor in common (`Unix`) configuration files, for example `~/.inputrc` and `Git
+This Vim plug-in sets 'keywordprg' (see |K|) so that hitting the key `K`
+shows the documentation of the keyword under the cursor in common (Unix)
+configuration files, for example `~/.inputrc` and Git.
 
 If the passage shown in the manpage is not to the point, please hit `n` a few
 times till reaching the most relevant one.
+
+The manpage opens in `less`: by |:!| in terminal Vim, and in a |:terminal|
+in GVim and Neovim.
+
+==============================================================================
+SUPPORTED FILES                                     *keyword-lookup-files*
+
+File                                    Manpage ~
+Git config files ('filetype' gitconfig) git-config, at the key of the
+                                        current section
+mpv/mpv.conf                            mpv
+yt-dlp/config                           yt-dlp
+youtube-dl/config                       youtube-dl
+~/.gnupg/gpg-agent.conf                 gpg-agent
+~/.mbsyncrc                             mbsync
+~/.msmtprc, ~/.config/msmtp/config      msmtp
+~/.latexmkrc, latexmk/latexmkrc         latexmk
+NetworkManager.conf                     NetworkManager.conf
+~/.tigrc, ~/.config/tig/config          tigrc
+ranger/rc.conf                          ranger
+ranger/rifle.conf                       rifle
+udiskie/config.yml                      udiskie
+zathura/zathurarc                       zathurarc
+redshift.conf                           redshift
+~/.recoll/recoll.conf                   recoll.conf
+thermald/thermal-conf.xml               thermal-conf.xml
+~/.imapfilter/*.lua                     imapfilter_config
+
+                                                    *:ConfigKeywordPrg*
+                                                    *:GitKeywordPrg*
+'keywordprg' is set to the buffer-local command `:ConfigKeywordPrg`, or
+`:GitKeywordPrg` in Git config files. Both are removed again, together with
+the options they changed, when the 'filetype' changes.
+
+==============================================================================
+SEE ALSO                                            *keyword-lookup-zeal*
 
 To look up the current keyword in many file types by the graphical offline
 documentation browser Zeal (http://www.zealdocs.org) as well, have a look at
